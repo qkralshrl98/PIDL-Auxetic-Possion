@@ -1,7 +1,6 @@
-# PIDL-Auxetic-Possion
 # Physics-Informed Deep Learning with Monotonicity Constraints for Few-Shot Prediction of Poisson’s Ratio in Auxetic Metamaterials
 
-This repository provides the source code and dataset used for the study:
+This repository provides the source code used for the study:
 
 **Physics-Informed Deep Learning with Monotonicity Constraints for Few-Shot Prediction of Poisson’s Ratio in Auxetic Metamaterials**
 
@@ -12,10 +11,10 @@ The objective of this study is to develop a physics-informed deep learning frame
 - [Overview](#overview)
 - [Repository Structure](#repository-structure)
 - [Installation](#installation)
-- [Dataset](#dataset)
-- [Usage](#usage)
+- [Code Organization](#code-organization)
 - [Experimental Scenarios](#experimental-scenarios)
 - [Physics-Informed Monotonicity Loss](#physics-informed-monotonicity-loss)
+- [Usage](#usage)
 - [Results](#results)
 - [License](#license)
 - [Contact](#contact)
@@ -24,7 +23,9 @@ The objective of this study is to develop a physics-informed deep learning frame
 
 Mechanical metamaterials, especially auxetic structures, exhibit geometry-dependent effective mechanical properties such as negative Poisson’s ratio. However, finite element analysis of multi-cell auxetic structures requires high computational cost, especially when the design space includes multiple geometric variables, material contrast, and structural scale.
 
-To address this issue, this repository implements surrogate models for predicting the effective Poisson’s ratio from the following input variables:
+To address this issue, this repository implements deep learning-based surrogate models for predicting the effective Poisson’s ratio of auxetic metamaterials.
+
+The input variables are:
 
 ```text
 t1, t2, d, Cell, Er
@@ -47,7 +48,7 @@ effective Poisson's ratio
 The implemented neural network backbones include:
 
 - Multilayer Perceptron (MLP)
-- ResNet-style Tabular Network (RNTN)
+- ResNet-style Tabular Network
 - TabNet
 - FT-Transformer (FTT)
 
@@ -57,27 +58,71 @@ Each model is evaluated with and without the proposed physics-informed monotonic
 
 ```text
 PIDL-Auxetic-Poisson/
-├── data/
-│   ├── raw/
-│   │   └── original_fea_data.xlsx
-│   └── processed/
-│       └── poisson_ratio_dataset.csv
-├── src/
-│   ├── models/
-│   │   ├── mlp.py
-│   │   ├── rntn.py
-│   │   ├── tabnet.py
-│   │   └── ftt.py
-│   ├── losses/
-│   │   └── pi_monotonic_loss.py
-│   ├── train.py
-│   ├── fine_tune.py
-│   └── evaluate.py
-├── results/
-│   ├── figures/
-│   └── tables/
 ├── README.md
-└── requirements.txt
+│
+├── Primary exploration Scenario - w PI_loss__MLP/
+│   ├── Primary_MLP_PI_pretrained.py
+│   └── Primary_MLP_PI_finetuning.py
+│
+├── Primary exploration Scenario - w PI_loss_FTT/
+│   ├── Primary_FTT_PI_pretrained.py
+│   └── Primary_FTT_PI_finetuning.py
+│
+├── Primary exploration Scenario - w PI_loss_ResNet-style Tabular Network/
+│   ├── Primary_ResNet-style Tabular Network_PI_pretrained.py
+│   └── Primary_ResNet-style Tabular Network_PI_finetuning.py
+│
+├── Primary exploration Scenario - w PI_loss_TabNet/
+│   ├── Primary_TabNet_PI_pretrained.py
+│   └── Primary_TabNet_PI_finetuning.py
+│
+├── Primary exploration Scenario - w.o PI_loss_FTT/
+│   ├── Primary_FTT_pretrained.py
+│   └── Primary_FTT_finetuning.py
+│
+├── Primary exploration Scenario - w.o PI_loss_MLP/
+│   ├── Primary_MLP_pretrained.py
+│   └── Primary_MLP_finetuning.py
+│
+├── Primary exploration Scenario - w.o PI_loss_ResNet-style Tabular Network/
+│   ├── Primary_ResNet-style Tabular Network_pretrained.py
+│   └── Primary_ResNet-style Tabular Network_finetuning.py
+│
+├── Primary exploration Scenario - w.o PI_loss_TabNet/
+│   ├── Primary_TabNet_pretrained.py
+│   └── Primary_TabNet_finetuning.py
+│
+├── Proximal and Extreme exploration scenario - w PI_loss_FTT/
+│   ├── Proximal and Extreme_FTT_PI_pretrained.py
+│   └── Proximal and Extreme_FTT_PI_finetuning.py
+│
+├── Proximal and Extreme exploration scenario - w PI_loss_MLP/
+│   ├── Proximal and Extreme_MLP_PI_pretrained.py
+│   └── Proximal and Extreme_MLP_PI_finetuning.py
+│
+├── Proximal and Extreme exploration scenario - w PI_loss_ResNet-style Tabular Network/
+│   ├── Proximal and Extreme_ResNet-style Tabular Network_PI_pretrained.py
+│   └── Proximal and Extreme_ResNet-style Tabular Network_PI_finetuning.py
+│
+├── Proximal and Extreme exploration scenario - w PI_loss_TabNet/
+│   ├── Proximal and Extreme_TabNet_PI_pretrained.py
+│   └── Proximal and Extreme_TabNet_PI_finetuning.py
+│
+├── Proximal and Extreme exploration scenario - w.o PI_loss_FTT/
+│   ├── Proximal and Extreme_FTT_pretrained.py
+│   └── Proximal and Extreme_FTT_finetuning.py
+│
+├── Proximal and Extreme exploration scenario - w.o PI_loss_MLP/
+│   ├── Proximal and Extreme_MLP_pretrained.py
+│   └── Proximal and Extreme_MLP_finetuning.py
+│
+├── Proximal and Extreme exploration scenario - w.o PI_loss_ResNet-style Tabular Network/
+│   ├── Proximal and Extreme_ResNet-style Tabular Network_pretrained.py
+│   └── Proximal and Extreme_ResNet-style Tabular Network_finetuning.py
+│
+└── Proximal and Extreme exploration scenario - w.o PI_loss_TabNet/
+    ├── Proximal and Extreme_TabNet_pretrained.py
+    └── Proximal and Extreme_TabNet_finetuning.py
 ```
 
 ## Installation
@@ -117,86 +162,41 @@ pip install openpyxl
 pip install tensorflow
 ```
 
-Alternatively, if `requirements.txt` is provided:
+## Code Organization
 
-```bash
-pip install -r requirements.txt
-```
+Each folder corresponds to a specific experimental condition.
 
-## Dataset
-
-The dataset was generated using finite element analysis of auxetic metamaterial structures. Each sample consists of geometric design variables, structural scale, material contrast, and the corresponding effective Poisson’s ratio.
-
-The input variables are:
+The folder name indicates:
 
 ```text
-t1, t2, d, Cell, Er
+Scenario type + PI loss condition + model backbone
 ```
 
-The target variable is:
+For example:
 
 ```text
-effective Poisson's ratio
+Primary exploration Scenario - w PI_loss__MLP
 ```
 
-The dataset includes four structural scale levels:
+means:
 
 ```text
-Cell = 1, 3, 5, 7
+Primary extrapolation scenario
+Model: MLP
+Physics-informed monotonicity loss: applied
 ```
 
-and three elastic modulus ratio levels:
+Each folder generally contains two Python files:
 
 ```text
-Er = 10, 20, 30
+*_pretrained.py
+*_finetuning.py
 ```
 
-For reproducibility, place the dataset in the following directory:
+where:
 
-```text
-data/processed/poisson_ratio_dataset.csv
-```
-
-The original raw data can be stored in:
-
-```text
-data/raw/original_fea_data.xlsx
-```
-
-## Usage
-
-### 1. Train a baseline model
-
-```bash
-python src/train.py --model mlp --loss mse
-```
-
-### 2. Train a physics-informed model
-
-```bash
-python src/train.py --model mlp --loss pi --alpha 10
-```
-
-### 3. Fine-tune the model under few-shot target-domain adaptation
-
-```bash
-python src/fine_tune.py --model mlp --scenario primary --support_size 5
-```
-
-### 4. Evaluate the trained model
-
-```bash
-python src/evaluate.py --model mlp --scenario primary --support_size 5
-```
-
-The model option can be changed as follows:
-
-```text
-mlp
-rntn
-tabnet
-ftt
-```
+- `*_pretrained.py`: source-domain pre-training code
+- `*_finetuning.py`: target-domain few-shot fine-tuning and evaluation code
 
 ## Experimental Scenarios
 
@@ -209,12 +209,16 @@ Source domain: Cell = 1, 3, 5
 Target domain: Cell = 7
 ```
 
+This scenario evaluates whether the model can predict a larger structural scale that is not included in the source-domain training data.
+
 ### Proximal Extrapolation Scenario
 
 ```text
 Source domain: Cell = 1, 3
 Target domain: Cell = 5
 ```
+
+This scenario evaluates near-range extrapolation performance from smaller cell structures to a moderately larger cell structure.
 
 ### Extreme Extrapolation Scenario
 
@@ -223,13 +227,7 @@ Source domain: Cell = 1, 3
 Target domain: Cell = 7
 ```
 
-For each scenario, the model is first pre-trained on the source domain and then fine-tuned using a limited number of support samples from the target domain.
-
-The support sizes are:
-
-```text
-5, 10, 50, 100
-```
+This scenario evaluates far-range extrapolation performance under a more severe out-of-distribution condition.
 
 ## Physics-Informed Monotonicity Loss
 
@@ -239,7 +237,11 @@ The proposed physics-informed loss consists of two terms:
 L_total = L_MSE + alpha * L_mono
 ```
 
-where `L_MSE` is the regression loss between the predicted and FEA-based effective Poisson’s ratio, and `L_mono` is the monotonicity penalty imposed along the Cell direction.
+where:
+
+- `L_MSE`: regression loss between the predicted and FEA-based effective Poisson’s ratio
+- `L_mono`: monotonicity penalty imposed along the Cell direction
+- `alpha`: weighting factor for the physics-informed monotonicity loss
 
 The monotonicity loss is designed to suppress physically inconsistent predictions during extrapolation along the structural scale axis. In this study, the Cell variable is treated as an ordered scalar variable in the neural network input, and the monotonicity penalty is computed using the derivative of the model output with respect to the Cell variable.
 
@@ -249,9 +251,54 @@ The default value of the loss weight is:
 alpha = 10
 ```
 
+## Usage
+
+Move to the folder corresponding to the model and scenario that you want to run.
+
+### Example 1. Primary extrapolation scenario with MLP and PI loss
+
+```bash
+cd "Primary exploration Scenario - w PI_loss__MLP"
+python Primary_MLP_PI_pretrained.py
+python Primary_MLP_PI_finetuning.py
+```
+
+### Example 2. Primary extrapolation scenario with MLP without PI loss
+
+```bash
+cd "Primary exploration Scenario - w.o PI_loss_MLP"
+python Primary_MLP_pretrained.py
+python Primary_MLP_finetuning.py
+```
+
+### Example 3. Proximal and Extreme extrapolation scenario with MLP and PI loss
+
+```bash
+cd "Proximal and Extreme exploration scenario - w PI_loss_MLP"
+python "Proximal and Extreme_MLP_PI_pretrained.py"
+python "Proximal and Extreme_MLP_PI_finetuning.py"
+```
+
+### Example 4. Proximal and Extreme extrapolation scenario with MLP without PI loss
+
+```bash
+cd "Proximal and Extreme exploration scenario - w.o PI_loss_MLP"
+python "Proximal and Extreme_MLP_pretrained.py"
+python "Proximal and Extreme_MLP_finetuning.py"
+```
+
+The same procedure can be applied to the other model backbones:
+
+```text
+MLP
+FTT
+ResNet-style Tabular Network
+TabNet
+```
+
 ## Results
 
-The proposed physics-informed loss improves prediction accuracy and stability, particularly under few-shot and out-of-distribution extrapolation conditions.
+The proposed physics-informed monotonicity loss improves prediction accuracy and stability, particularly under few-shot and out-of-distribution extrapolation conditions.
 
 The main evaluation metrics are:
 
@@ -262,12 +309,14 @@ R2
 Inference time
 ```
 
-The results are saved in:
+The comparison is performed between:
 
 ```text
-results/tables/
-results/figures/
+w PI_loss
+w.o PI_loss
 ```
+
+for each model backbone and each extrapolation scenario.
 
 ## License
 
@@ -277,5 +326,5 @@ This repository is released for academic research purposes.
 
 Minwook Park  
 Department of Mechanical Engineering  
-Seoul National University of Science and Technology  
-Email: your-email@example.com
+Seoul National University of Science and Technology (Seoultech)
+Email: 25510093@seoultech.ac.kr
