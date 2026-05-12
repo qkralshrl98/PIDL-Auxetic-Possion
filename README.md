@@ -1,6 +1,6 @@
 # Physics-Informed Deep Learning with Monotonicity Constraints for Few-Shot Prediction of Poisson’s Ratio in Auxetic Metamaterials
 
-This repository provides the source code used for the study:
+This repository provides the source code and dataset used for the study:
 
 **Physics-Informed Deep Learning with Monotonicity Constraints for Few-Shot Prediction of Poisson’s Ratio in Auxetic Metamaterials**
 
@@ -11,6 +11,7 @@ The objective of this study is to develop a physics-informed deep learning frame
 - [Overview](#overview)
 - [Repository Structure](#repository-structure)
 - [Installation](#installation)
+- [Dataset](#dataset)
 - [Code Organization](#code-organization)
 - [Experimental Scenarios](#experimental-scenarios)
 - [Physics-Informed Monotonicity Loss](#physics-informed-monotonicity-loss)
@@ -61,66 +62,82 @@ PIDL-Auxetic-Poisson/
 ├── README.md
 │
 ├── Primary exploration Scenario - w PI_loss__MLP/
+│   ├── final_combined_data.xlsx
 │   ├── Primary_MLP_PI_pretrained.py
 │   └── Primary_MLP_PI_finetuning.py
 │
 ├── Primary exploration Scenario - w PI_loss_FTT/
+│   ├── final_combined_data.xlsx
 │   ├── Primary_FTT_PI_pretrained.py
 │   └── Primary_FTT_PI_finetuning.py
 │
 ├── Primary exploration Scenario - w PI_loss_ResNet-style Tabular Network/
+│   ├── final_combined_data.xlsx
 │   ├── Primary_ResNet-style Tabular Network_PI_pretrained.py
 │   └── Primary_ResNet-style Tabular Network_PI_finetuning.py
 │
 ├── Primary exploration Scenario - w PI_loss_TabNet/
+│   ├── final_combined_data.xlsx
 │   ├── Primary_TabNet_PI_pretrained.py
 │   └── Primary_TabNet_PI_finetuning.py
 │
 ├── Primary exploration Scenario - w.o PI_loss_FTT/
+│   ├── final_combined_data.xlsx
 │   ├── Primary_FTT_pretrained.py
 │   └── Primary_FTT_finetuning.py
 │
 ├── Primary exploration Scenario - w.o PI_loss_MLP/
+│   ├── final_combined_data.xlsx
 │   ├── Primary_MLP_pretrained.py
 │   └── Primary_MLP_finetuning.py
 │
 ├── Primary exploration Scenario - w.o PI_loss_ResNet-style Tabular Network/
+│   ├── final_combined_data.xlsx
 │   ├── Primary_ResNet-style Tabular Network_pretrained.py
 │   └── Primary_ResNet-style Tabular Network_finetuning.py
 │
 ├── Primary exploration Scenario - w.o PI_loss_TabNet/
+│   ├── final_combined_data.xlsx
 │   ├── Primary_TabNet_pretrained.py
 │   └── Primary_TabNet_finetuning.py
 │
 ├── Proximal and Extreme exploration scenario - w PI_loss_FTT/
+│   ├── final_combined_data.xlsx
 │   ├── Proximal and Extreme_FTT_PI_pretrained.py
 │   └── Proximal and Extreme_FTT_PI_finetuning.py
 │
 ├── Proximal and Extreme exploration scenario - w PI_loss_MLP/
+│   ├── final_combined_data.xlsx
 │   ├── Proximal and Extreme_MLP_PI_pretrained.py
 │   └── Proximal and Extreme_MLP_PI_finetuning.py
 │
 ├── Proximal and Extreme exploration scenario - w PI_loss_ResNet-style Tabular Network/
+│   ├── final_combined_data.xlsx
 │   ├── Proximal and Extreme_ResNet-style Tabular Network_PI_pretrained.py
 │   └── Proximal and Extreme_ResNet-style Tabular Network_PI_finetuning.py
 │
 ├── Proximal and Extreme exploration scenario - w PI_loss_TabNet/
+│   ├── final_combined_data.xlsx
 │   ├── Proximal and Extreme_TabNet_PI_pretrained.py
 │   └── Proximal and Extreme_TabNet_PI_finetuning.py
 │
 ├── Proximal and Extreme exploration scenario - w.o PI_loss_FTT/
+│   ├── final_combined_data.xlsx
 │   ├── Proximal and Extreme_FTT_pretrained.py
 │   └── Proximal and Extreme_FTT_finetuning.py
 │
 ├── Proximal and Extreme exploration scenario - w.o PI_loss_MLP/
+│   ├── final_combined_data.xlsx
 │   ├── Proximal and Extreme_MLP_pretrained.py
 │   └── Proximal and Extreme_MLP_finetuning.py
 │
 ├── Proximal and Extreme exploration scenario - w.o PI_loss_ResNet-style Tabular Network/
+│   ├── final_combined_data.xlsx
 │   ├── Proximal and Extreme_ResNet-style Tabular Network_pretrained.py
 │   └── Proximal and Extreme_ResNet-style Tabular Network_finetuning.py
 │
 └── Proximal and Extreme exploration scenario - w.o PI_loss_TabNet/
+    ├── final_combined_data.xlsx
     ├── Proximal and Extreme_TabNet_pretrained.py
     └── Proximal and Extreme_TabNet_finetuning.py
 ```
@@ -162,6 +179,42 @@ pip install openpyxl
 pip install tensorflow
 ```
 
+## Dataset
+
+Each experimental folder contains the raw dataset file required to run the corresponding scripts:
+
+```text
+final_combined_data.xlsx
+```
+
+The Python scripts are configured to load the dataset from the same folder in which the scripts are located. Therefore, no additional dataset path modification is required if each script is executed inside its corresponding folder.
+
+The dataset was generated using finite element analysis of auxetic metamaterial structures. Each sample consists of geometric design variables, structural scale, material contrast, and the corresponding effective Poisson’s ratio.
+
+The input variables are:
+
+```text
+t1, t2, d, Cell, Er
+```
+
+The target variable is:
+
+```text
+effective Poisson's ratio
+```
+
+The dataset includes four structural scale levels:
+
+```text
+Cell = 1, 3, 5, 7
+```
+
+and three elastic modulus ratio levels:
+
+```text
+Er = 10, 20, 30
+```
+
 ## Code Organization
 
 Each folder corresponds to a specific experimental condition.
@@ -186,15 +239,17 @@ Model: MLP
 Physics-informed monotonicity loss: applied
 ```
 
-Each folder generally contains two Python files:
+Each folder generally contains three files:
 
 ```text
+final_combined_data.xlsx
 *_pretrained.py
 *_finetuning.py
 ```
 
 where:
 
+- `final_combined_data.xlsx`: raw FEA-generated dataset
 - `*_pretrained.py`: source-domain pre-training code
 - `*_finetuning.py`: target-domain few-shot fine-tuning and evaluation code
 
